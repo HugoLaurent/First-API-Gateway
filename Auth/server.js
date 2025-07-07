@@ -1,9 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
-
-const { register } = require("./controller/registerController");
-const { login } = require("./controller/loginController");
+const auth = require("./routes/auth");
 
 async function start() {
   try {
@@ -12,8 +10,7 @@ async function start() {
     const app = express();
     app.use(express.json());
 
-    app.post("/auth/register", register);
-    app.post("/auth/login", login);
+    app.use("/auth", auth);
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () =>
