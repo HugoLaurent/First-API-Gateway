@@ -1,17 +1,20 @@
-require("dotenv").config(); // charge .env
+require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
-const authRoutes = require("./routes/auth");
+const connectDB = require("./config/db");
+
+const { register } = require("./controller/registerController");
+const { login } = require("./controller/loginController");
 
 async function start() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {});
-    console.log("Connecté à:", mongoose.connection.db.databaseName);
+    await connectDB();
 
     const app = express();
     app.use(express.json());
 
-    app.use("/api/auth", authRoutes);
+    app.post("/auth/register", register);
+    app.post("/auth/login", login);
+
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () =>
       console.log(`🚀  Auth service en écoute sur http://localhost:${PORT}`)

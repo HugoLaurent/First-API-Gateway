@@ -19,9 +19,6 @@ exports.login = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN || "1h" }
     );
 
-    user.token = token;
-    await user.save();
-
     res.json({ message: "Connecté", token });
   } catch (err) {
     console.error(err);
